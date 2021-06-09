@@ -28,6 +28,7 @@ const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const postcssNormalize = require('postcss-normalize');
+/*const { join } = require('path/posix');*/
 
 const appPackageJson = require(paths.appPackageJson);
 
@@ -77,6 +78,33 @@ const hasJsxRuntime = (() => {
   }
 })();
 
+const keycloakTemplates = [];
+const themesDir = fs.readdirSync(paths.keycloakThemesPath, {withFileTypes: true})
+.filter((item) => item.isDirectory).map((dir) => dir.name);
+for(const themeDir of themesDir) {
+  const pagesDirs = fs.readdirSync(path.join(paths.keycloakThemesPath, themeDir))
+  .filter((dir) => dir.endsWith('-pages'));
+  for(const pagesDir of pagesDirs) {
+    const templatesDirs = fs.readdirSync(path.join(paths.keycloakThemesPath, themeDir, pagesDir))
+    .filter((dir) => dir.endsWith('-template'));
+    for(const templatesDir of templatesDirs) {
+      const ftlTemplates = fs.readFileSync(path.join(paths.keycloakThemesPath, themeDir, pagesDir, templatesDir))
+      .filter((file) => file.endsWith('.ftl'));
+      const componentPages = fs.readFileSync(path.join(paths.keycloakThemesPath, themeDir, pagesDir, templatesDir))
+      .filter((file) => file.endsWith('.page.tsx'));
+      if(ftlTemplates.length && componentPages.length) {
+        const ftlTemplate = ftlTemplates[0];
+        const componentPage = componentPages[0];
+        keycloakTemplates.push({
+          templateSrc: path.join(paths.keycloakThemesPath, themeDir, pagesDir, templatesDir, ftlTemplate),
+          templateOut: path.join(themeDir, pagesDir.replace('-pages', ''), ftlTemplate)
+        });
+      }
+    }
+  }
+}
+console.log(keycloakTemplates);
+process.exit(0);
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (webpackEnv) {
