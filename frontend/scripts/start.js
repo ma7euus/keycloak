@@ -21,7 +21,7 @@ const webpack = require('webpack');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const {
     createCompiler
-} = require('react-dev-utils/WebpackDevServerUtils');
+} = require('../config/WebpackDevServerUtils');
 const paths = require('../config/paths');
 const configFactory = require('../config/webpack.config');
 const getClientEnvironment = require('../config/env');
