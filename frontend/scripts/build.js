@@ -14,7 +14,7 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 
-
+const makeCommonResources = require("./make-common-resources");
 const path = require('path');
 const chalk = require('react-dev-utils/chalk');
 const fs = require('fs-extra');
@@ -85,8 +85,10 @@ checkBrowsers(paths.appPath, isInteractive)
         );
       } else {
         console.log(chalk.green('Compiled successfully.\n'));
+
       }
 
+      makeCommonResources();
       console.log('File sizes after gzip:\n');
       printFileSizesAfterBuild(
         stats,
@@ -99,12 +101,12 @@ checkBrowsers(paths.appPath, isInteractive)
 
       const appPackage = require(paths.appPackageJson);
       const publicUrl = paths.publicUrlOrPath;
-      const publicPath = config.output.publicPath;
+      //const publicPath = config.output.publicPath;
       const buildFolder = path.relative(process.cwd(), paths.appBuild);
       printHostingInstructions(
         appPackage,
         publicUrl,
-        publicPath,
+      //  publicPath,
         buildFolder,
         useYarn
       );

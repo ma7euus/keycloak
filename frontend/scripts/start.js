@@ -1,6 +1,8 @@
 'use strict';
 
 // Do this as the first thing so that any code reading it knows the right env.
+const makeCommonResources = require("./make-common-resources");
+
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
 
@@ -24,7 +26,6 @@ const {
 } = require('../config/WebpackDevServerUtils');
 const paths = require('../config/paths');
 const configFactory = require('../config/webpack.config');
-const getClientEnvironment = require('../config/env');
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 
@@ -71,7 +72,18 @@ createCompiler({
     tscCompileOnError,
     webpack,
 }).watch({}, (err, stats) => {
-  if(err) {
-    console.error(err);
-  }
+    if (err) {
+        console.error(err);
+    }
+    if (stats) {
+        console.log(
+            stats.toString({
+                assets: false,
+                children: false,
+                chunks: false,
+                colors: true
+            })
+        )
+    }
+    makeCommonResources();
 });

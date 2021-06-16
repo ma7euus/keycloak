@@ -596,12 +596,14 @@ module.exports = function (webpackEnv) {
                     Object.assign(
                         {},
                         {
-                            inject: false,
+                            //inject: false,
+                            inject: true,
                             template: template.templateSrc,
                             chunks: [
                                 template.entry.chunk
                             ],
                             filename: path.join(paths.appBuild, template.templateOut),
+                            publicPath: '${url.resourcesCommonPath}/..'
 
                         },
                         {
