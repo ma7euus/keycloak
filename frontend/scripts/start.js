@@ -20,7 +20,6 @@ require('../config/env');
 const fs = require('fs');
 const chalk = require('react-dev-utils/chalk');
 const webpack = require('webpack');
-const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const {
     createCompiler
 } = require('../config/WebpackDevServerUtils');
@@ -28,11 +27,6 @@ const paths = require('../config/paths');
 const configFactory = require('../config/webpack.config');
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
-
-// Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
-    process.exit(1);
-}
 
 if (process.env.HOST) {
     console.log(

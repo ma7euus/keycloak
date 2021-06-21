@@ -597,7 +597,7 @@ module.exports = function (webpackEnv) {
                         {},
                         {
                             //inject: false,
-                            inject: true,
+                            inject: false,
                             template: template.templateSrc,
                             chunks: [
                                 template.entry.chunk
