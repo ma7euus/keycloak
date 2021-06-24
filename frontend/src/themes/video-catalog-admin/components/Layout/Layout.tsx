@@ -1,61 +1,89 @@
-import {Box, Card, CardHeader, CardContent, Grid, makeStyles} from "@material-ui/core";
-import Navbar from "../Navbar/Navbar";
+import {
+    Box,
+    Container,
+    makeStyles,
+    Theme,
+    Typography,
+} from "@material-ui/core";
+import logo from "./../../../../static/img/logo.png";
+import Alert, {Color} from "@material-ui/lab/Alert";
 import LocaleSelect from "../LocaleSelect/LocaleSelect";
+import Copyright from "../Copyright/Copyright";
 
-const useStyles = makeStyles((theme) => ({
-    cardWrapper: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
+export type LayoutProps = {
+    i18nEnabled: boolean;
+    locale?: { currentLocale: string; locales: { label: string; url: string }[] };
+    title: string;
+    message?: {
+        type: Color;
+        summary: string;
+    };
+    isAppInitiatedAction: boolean;
+};
+
+const useStyles = makeStyles((theme: Theme) => ({
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
     },
-    card: {
-        width: 600,
-        [theme.breakpoints.down('sm')]: {
-            width: '100%',
-            marginLeft: theme.spacing(1),
-            marginRight: theme.spacing(1),
-        },
+    logo: {
+        width: 200,
+        marginBottom: theme.spacing(3),
+    },
+    title: {
+        marginBottom: theme.spacing(3),
+    },
+    alert: {
+        marginBottom: theme.spacing(2),
+    },
+    footer: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
 }));
 
-export interface LayoutProps {
-//loginTitle: string,
-    i18nEnabled: boolean,
-    locale?: {
-        currentLocale: string,
-        locales: [
-            {
-                label: string,
-                url: string
-            },
-        ]
-    },
-    title: string,
-    message: string,
-    isAppInitiatedAction: boolean
-}
-
 export const Layout: React.FunctionComponent<LayoutProps> = (props) => {
-    const {i18nEnabled, title, locale, message, isAppInitiatedAction} = props;
-
+    const {
+        i18nEnabled,
+        locale,
+        title,
+        children,
+        message,
+        isAppInitiatedAction,
+    } = props;
     const classes = useStyles();
 
-    return <div>
-        <Navbar/>
-        <Box paddingTop={"70px"}>
-            <Grid container alignItems="center" justify="center" direction="column">
-                <Grid item className={classes.cardWrapper}>
-                    <Card className={classes.card}>
-                        <CardHeader title={title}/>
-                        <CardContent></CardContent>
-                    </Card>
-                </Grid>
-                {i18nEnabled && locale &&
-                <Grid item>
-                    <LocaleSelect locales={locale.locales} defaultValue={locale.currentLocale} disableUnderline={true}/>
-                </Grid>
-                }
-            </Grid>
-        </Box>
-    </div>;
-}
+    return (
+        <Container component="main" maxWidth="xs" className={classes.container}>
+            <Box textAlign="center">
+                <img src={logo} alt="logo" className={classes.logo}/>
+                <Typography component="h1" variant="h5" className={classes.title}>
+                    {title}
+                </Typography>
+            </Box>
+            {message && !isAppInitiatedAction && (
+                <Alert
+                    variant="outlined"
+                    severity={message.type}
+                    className={classes.alert}
+                >
+                    {message.summary}
+                </Alert>
+            )}
+            {children}
+            <Box mt={4} width="100%" className={classes.footer}>
+                {i18nEnabled && locale && (
+                    <LocaleSelect
+                        locales={locale?.locales}
+                        defaultValue={locale?.currentLocale}
+                        disableUnderline={true}
+                    />
+                )}
+                <Copyright/>
+            </Box>
+        </Container>
+    );
+};
