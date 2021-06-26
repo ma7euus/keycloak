@@ -53,8 +53,8 @@
         isAppInitiatedAction: false,
        </#if>
      };
-     console.log(layoutProps);
     </script>
+    <#nested "script-child">
     <#nested "scripts">
   </body>
 </html>

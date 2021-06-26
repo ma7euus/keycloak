@@ -1,9 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "../../../../reportWebVitals";
-import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
-import theme from "../../../../theme";
-import {Layout, LayoutProps} from "../../components/Layout/Layout";
+import {
+    CssBaseline,
+    MuiThemeProvider
+} from "@material-ui/core";
+import {Layout, LayoutProps} from "../../Layout";
+import theme from "../../theme";
 import LoginForm, {LoginFormProps} from "../../components/LoginForm/LoginForm";
 
 declare const layoutProps: LayoutProps;
@@ -12,10 +15,11 @@ declare const pageProps: LoginFormProps;
 ReactDOM.render(
     <React.StrictMode>
         <MuiThemeProvider theme={theme}>
-            <CssBaseline />
+            <CssBaseline/>
             <Layout {...layoutProps}>
-                <LoginForm {...pageProps} />
+                <LoginForm {...pageProps}></LoginForm>
             </Layout>
+            <CssBaseline/>
         </MuiThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")
