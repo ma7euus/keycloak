@@ -41,3 +41,10 @@ services:
     container_name: video-auth-frontend
     volumes:
       - ./frontend:/home/node/app
+
+  test:
+    build: ./tests
+    entrypoint: ./.docker/entrypoint.sh
+    container_name: video-auth-test
+    volumes:
+      - ./tests:/home/node/app
