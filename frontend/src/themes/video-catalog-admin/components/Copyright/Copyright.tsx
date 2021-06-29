@@ -5,7 +5,7 @@ const Copyright: React.FunctionComponent = () => {
         <Typography variant="body2" color="textSecondary" align="right">
             {"© "}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                CodeFlix
             </Link>{" "}
             {new Date().getFullYear()}
         </Typography>

@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "center"
     },
     title: {
         marginBottom: theme.spacing(3),
@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0, 0, 2, 0),
         backgroundColor: "rgba(255,255,255, 0.2)",
     },
+    rememberSignUp: {
+        marginTop: theme.spacing(1),
+    }
 }));
 
 type IconsProps = {
@@ -195,7 +198,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
                             ))}
                         </>
                     )}
-                    <Grid container>
+                    <Grid container className={classes.rememberSignUp}>
                         <Grid item xs>
                             {resetPasswordAllowed && (
                                 <Link href={resetPasswordUrl} variant="body2">
