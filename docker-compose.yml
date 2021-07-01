@@ -3,10 +3,12 @@ version: '3'
 services:
   app:
     build: .
-    container_name: 'video-auth-app'
+    container_name: video-auth-app
+    entrypoint: /opt/jboss/keycloak/bin/entrypoint.sh
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT_MULTI=/opt/jboss/keycloak/realm-config
       - DB_ADDR=db
       - DB_VENDOR=mysql
       - DB_DATABASE=video_auth
@@ -16,6 +18,8 @@ services:
     ports:
       - 8080:8080
     volumes:
+      - ./.docker/keycloak/entrypoint.sh:/opt/jboss/keycloak/bin/entrypoint.sh
+      - ./.docker/keycloak/realm-config:/opt/jboss/keycloak/realm-config
       - ./frontend/build/video-catalog-admin:/opt/jboss/keycloak/themes/video-catalog-admin
       - ./.docker/keycloak/config/standalone-ha.xml:/opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
     depends_on:
