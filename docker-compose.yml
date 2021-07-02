@@ -63,7 +63,7 @@ services:
       - default
 
   selenium:
-    image: selenium/standalone-chrome:91.0-chromedriver-91.0-20210527
+    image: selenium/standalone-chrome:88.0.4324.150-chromedriver-88.0.4324.96
     container_name: micro-auth-selenium
     expose:
       - 4444
