@@ -1,6 +1,7 @@
 import * as Keycloak from "keycloak-connect";
 import {Builder, Capabilities, until, WebDriver} from "selenium-webdriver";
 import * as session from "express-session";
+import { v4 as uuidv4 } from "uuid";
 
 const capabilities = Capabilities.chrome();
 
@@ -34,14 +35,14 @@ describe("validate themes", () => {
         await driver.quit();
     });
 
-    test("should be able to see sign in text", async () => {
+    test("validate codeflix theme", async () => {
         const memoryStore = new session.MemoryStore();
 
         const keycloak = new Keycloak(
             {store: memoryStore},
             {
                 realm: "test",
-                resource: "test",
+                resource: "client-test",
                 "auth-server-url": "http://app.test:8080/auth/",
                 "ssl-required": "external",
                 "confidential-port": 0,
@@ -49,41 +50,18 @@ describe("validate themes", () => {
         );
 
         const loginUrl = keycloak.loginUrl(
-            "1b3497d3-9c9b-4901-b529-d1d9ac4c6a1d",
+            uuidv4(),
             "http://localhost:8000"
         );
 
         await driver.get(loginUrl);
         await driver.sleep(5000);
         await driver.wait(
-            until.elementLocated({xpath: "//h1[text()='Sign In']"})
+            until.elementLocated({ xpath: "//span[text()='Log In']" })
         );
-    });
-
-    test("should be able to class name to sign in text", async () => {
-        const memoryStore = new session.MemoryStore();
-
-        const keycloak = new Keycloak(
-            {store: memoryStore},
-            {
-                realm: "test",
-                resource: "test",
-                "auth-server-url": "http://app.test:8080/auth/",
-                "ssl-required": "external",
-                "confidential-port": 0,
-            }
-        );
-
-        const loginUrl = keycloak.loginUrl(
-            "1b3497d3-9c9b-4901-b529-d1d9ac4c6a1d",
-            "http://localhost:8000"
-        );
-
-        await driver.get(loginUrl);
-        await driver.sleep(5000);
         await driver.wait(
             until.elementLocated({
-                className: "MuiTypography-root makeStyles-title-3 MuiTypography-h5",
+                className: "MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock",
             })
         );
     });
