@@ -12,3 +12,21 @@ services:
       - DB_VENDOR=h2
     ports:
       - 8080:8080
+
+  test:
+    build:
+      context: ./tests
+      args:
+        - UID=${UID}
+    entrypoint: ./.docker/entrypoint.sh
+    container_name: video-auth-test
+    volumes:
+      - ./tests:/home/node/app
+
+  selenium:
+    image: selenium/standalone-chrome:91.0-chromedriver-91.0-20210527
+    container_name: micro-auth-selenium
+
+  dockerize:
+    image: jwilder/dockerize
+    entrypoint: dockerize -wait tcp://app.test:8080 -timeout 200s
